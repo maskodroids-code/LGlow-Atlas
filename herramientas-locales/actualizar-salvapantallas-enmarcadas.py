@@ -1,7 +1,7 @@
 from pathlib import Path
 import hashlib, io, json, re, shlex, subprocess, tarfile
 
-source = Path(r'C:\lglow-main\salvapantallas\Con marco')
+source = Path(__file__).resolve().parents[1] / 'salvapantallas' / 'Con marco'
 files = sorted(source.glob('*.jpg'))
 assert len(files) == 17
 archive = io.BytesIO()
