@@ -1,0 +1,10 @@
+--- a/qml/UserInterfaceLayer/Containers/Main/TopGlobalAction.qml
++++ b/qml/UserInterfaceLayer/Containers/Main/TopGlobalAction.qml
+@@ -143,6 +143,7 @@
+ 
+                 mouseActivated: rootWindow.cursorVisible
+                 buttonType: systemProperties.isWEE ? c_type : s_type
++                textNormalColor: "#3A3D42" // [fullhome-custom]
+                 bClickEffect: true
+                 bgColor: "transparent"
+                 text: barDelegate.dataObj.buttonText

@@ -1,0 +1,12 @@
+{
+  "fullhome": {
+    "patches": 12,
+    "roundtrip_normalized_line_endings": "PASS",
+    "original_checksums": "PASS"
+  },
+  "home": {
+    "patches": 3,
+    "roundtrip_normalized_line_endings": "PASS",
+    "original_checksums": "PASS"
+  }
+}

@@ -1,0 +1,39 @@
+--- a/qml/UserInterfaceLayer/Containers/Main/AppTile.qml
++++ b/qml/UserInterfaceLayer/Containers/Main/AppTile.qml
+@@ -67,12 +67,23 @@
+         id: bg
+ 
+         anchors.fill: systemProperties.isWEE ? appIcon : parent
+-        radius: systemProperties.isWEE ? width / 3 : styleSheet.selectable.radiusValue
++        radius: systemProperties.isWEE ? width / 3 : styleSheet.getRValue(18) // [fullhome-custom]
+         color: root.backgroundColor//"transparent"
+-        border.color: "#707070"
+-        border.width: systemProperties.isWEE ? styleSheet.getRValue(0): styleSheet.getRValue(1)
++        border.width: 0 // [fullhome-custom]
+         smooth: true
+-        visible: !systemProperties.isWEE
++        visible: !systemProperties.isWEE && customTile.status !== Image.Ready
++    }
++
++    // [fullhome-custom] Tile generado desde el icono de la app.
++    Image {
++        id: customTile
++        anchors.fill: parent
++        source: entry && entry.id ? "file:///var/lib/webosbrew/fullhomecustom/tiles/" + entry.id + ".png" : ""
++        sourceSize: Qt.size(300, 180)
++        asynchronous: true
++        smooth: true
++        mipmap: true
++        visible: status === Image.Ready
+     }
+ 
+     Image {
+@@ -86,7 +97,7 @@
+         height: entry ? styleSheet.tile.getAppIconSize(entry.tileType) : 0
+         asynchronous: true
+         fillMode: Image.PreserveAspectFit
+-        visible: (!hasBG || !root.hasFocus)
++        visible: (!hasBG || !root.hasFocus) && customTile.status !== Image.Ready // [fullhome-custom]
+         anchors.centerIn: parent
+         cache: false
+         scale: systemProperties.isWEE ?1: 1 / root.scale - (0.25 * (1 - root.scale))

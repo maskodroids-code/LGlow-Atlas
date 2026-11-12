@@ -1,0 +1,12 @@
+Prueba experimental LGlow: LG 43UN7300PSC, webOS 5.6.2-21, firmware 04.64.00.
+Parches derivados de tv/patches en la copia local de IrvingGuerra/lglow.
+No contiene QML propietario original de LG: se copia desde la propia TV al preparar.
+12 parches fullhome y 3 home regenerados y comprobados contra los originales del usuario.
+Prueba inicial: solo fullhome. Los parches home y el panel adaptado quedan SIN activar.
+preparar.sh verifica ambos juegos de originales antes de crear archivos en /var/lib/webosbrew.
+probar.sh monta temporalmente fullhome y oculta sus checkpoints sin borrarlos; relanza el home.
+No instala init.d, no reinicia compositor y no cambia precargas ni ajustes de LG.
+volver.sh retira montajes temporales y relanza el home original. Un reinicio tambien los retira.
+Los archivos preparados en /var/lib permanecen tras reiniciar, pero no se activan solos.
+NO ejecutar tv/install.sh del proyecto original con las huellas modificadas.
+Todavia no validado en ejecucion. No es una version publicada por el autor de LGlow.

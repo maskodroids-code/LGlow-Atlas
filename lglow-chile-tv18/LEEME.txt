@@ -1,0 +1,12 @@
+Prueba solo para 50UP7500PSF 03.53.45.
+Tarjetas debajo de la cuadricula. Desde la ultima app, bajar; arriba o Atras vuelve.
+OK actualiza los datos. Flechas laterales alternan el foco entre tarjetas.
+Configuracion reutilizada mediante paraTi.config; nunca se copia ni imprime la clave TMDB.
+Clima Open-Meteo; USD CurrencyLive USD/CLP; EUR Banco Central; UF/UTM/UTA/IPC SII.
+Las fechas identifican la referencia; IPC es variacion mensual y anual, no valor en pesos.
+Actualizacion cada 30 minutos mientras se ven las apps/tarjetas, sin servicio permanente.
+Si falla una fuente: No disponible. Sin sustitucion silenciosa por datos de otra fuente.
+Los formatos HTML pueden cambiar: el parser rechaza tablas desconocidas.
+Loader aislado; comprobacion real de QML, TLS y rendimiento pendiente en la TV.
+El cierre por inactividad de LG sigue vigente, sin cambios al compositor ni al firmware.
+La prueba no modifica el arranque. Reiniciar retira el montaje temporal.

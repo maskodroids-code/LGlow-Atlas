@@ -1,0 +1,24 @@
+--- a/qml/UserInterfaceLayer/Containers/Main/Hero.qml
++++ b/qml/UserInterfaceLayer/Containers/Main/Hero.qml
+@@ -818,19 +818,8 @@
+     function initialize() {
+         root.isCheckAdvertisement = false;
+         root.currentState = "default";
+-        if (uiController.showHeroBanner) {
+-        
+-            interfaces.promotion.requestBigBannerInfoWithoutContextIndex(root.adSlotName, root.adSize, function(promotionData) {
+-                processBigBannerPromotionRequest(promotionData);
+-            });
+-            if(systemProperties.isContentRecommendation) {
+-                interfaces.promotion.requestRecommendedAdData();
+-            }
+-
+-            root.isBigBannerRequested = true;
+-
+-            interfaces.promotion.requestInlineBannerAdData();
+-        }
++        // [lglow-tv18] Sin solicitudes de anuncios ni banners inline.
++        processBigBannerPromotionRequest([]);
+     }
+ 
+     function processBigBannerPromotionRequest(promotions) {

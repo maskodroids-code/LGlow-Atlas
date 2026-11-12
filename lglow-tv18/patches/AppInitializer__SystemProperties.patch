@@ -1,0 +1,11 @@
+--- a/qml/AppInitializer/SystemProperties.qml
++++ b/qml/AppInitializer/SystemProperties.qml
+@@ -94,7 +94,7 @@
+     property var exceptionRecommendation: []
+     property bool isContentRecommendation: true
+     property bool isCheckAdvertisement: false
+-    property bool isNoAdvertisement: false
++    property bool isNoAdvertisement: true // [lglow-tv18]
+     property bool isAdCountVisible: false
+     property bool keyCounter: false
+ 

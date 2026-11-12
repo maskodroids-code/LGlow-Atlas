@@ -1,0 +1,10 @@
+--- a/qml/Model/ShelfList.js
++++ b/qml/Model/ShelfList.js
+@@ -466,6 +466,7 @@
+ 
+         } else {
+             return this._shelfData.filter(function(item) {
++                if (item.shelfId !== "HOME_SH_TOP" && item.shelfId !== "HOME_SH_APPS") return false; // [lglow-tv18]
+                 if (self.appInterfaces.isDefaultShelf || self.appInterfaces.sdxNotReady) {
+ 
+                     if(systemProperties.isWEE){

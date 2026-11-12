@@ -1,0 +1,23 @@
+--- a/qml/UserInterfaceLayer/Containers/Main/AppGrid.qml
++++ b/qml/UserInterfaceLayer/Containers/Main/AppGrid.qml
+@@ -27,7 +27,9 @@
+     readonly property int pinnedShown: Math.min(lpModel.count, pinnedCount)
+ 
+     signal openAll(int column)
+-    signal closeAll(int column)
++    signal closeAll(int column)
++    signal exitDown()
++    property bool allowExitDown: false
+     // Lápiz: abre el modo edición de LG (reordenar = elegir cuáles van fijadas)
+     property var editEntry: ({ "id": "edit", "launchPointId": "edit", "tileType": "edit", "title": "" })
+ 
+@@ -190,7 +192,8 @@
+                     currentIndex = Math.min(i + c, n - 1);
+                     event.accepted = true;
+                 } else if (root.isAll) {
+-                    event.accepted = true; // en "todas" no baja más
++                    if (root.allowExitDown) root.exitDown();
++                    event.accepted = true; // tarjetas debajo de las apps
+                 } else {
+                     root.openAll(i % c); // ↓ desde la fila del home baja al resto
+                     event.accepted = true;

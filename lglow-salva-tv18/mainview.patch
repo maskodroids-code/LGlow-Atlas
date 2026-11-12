@@ -1,0 +1,25 @@
+--- a/qml/UserInterfaceLayer/Containers/MainView.qml
++++ b/qml/UserInterfaceLayer/Containers/MainView.qml
+@@ -2938,4 +2938,22 @@
+         z: 2100
+         onCerrado: lglowBarra.forceActiveFocus()
+     }
++
++    // [lglow-salva-tv18] Prueba local del home; no toca el compositor.
++    LglowSalvapantallas {
++        id: lglowSalva
++        anchors.fill: parent
++        windowController: rootWindow
++        timeoutMs: 30000 // PRUEBA: 30 segundos. Definitivo: 300000.
++        allowed: root.visible && rootWindow.active && systemProperties.isAppForeground
++                 && rootWindow.windowState === "maximized" && uiController.homeShown
++                 && !uiController.isEditMode && !uiController.isRecentMode
++                 && !lglowPanel.open && !lglowMenu.open
++        recommendations: paraTi.picks
++        fallbackImage: lglowTema.fondo
++        onCerrado: {
++            if (systemProperties.isAppForeground && rootWindow.active)
++                appListArea.forceActiveFocus();
++        }
++    }
+ }

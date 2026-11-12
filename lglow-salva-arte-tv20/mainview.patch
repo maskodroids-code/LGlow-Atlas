@@ -1,0 +1,50 @@
+--- a/qml/UserInterfaceLayer/Containers/MainView.qml
++++ b/qml/UserInterfaceLayer/Containers/MainView.qml
+@@ -2667,4 +2667,47 @@
+         z: 2100
+         onCerrado: lglowBarra.forceActiveFocus()
+     }
++    // [lglow-salva-tv20] Carga aislada: un error del protector no invalida el home.
++    Loader {
++        id: lglowSalvaLoader
++        anchors.fill: parent
++        z: 10000
++        source: "Main/LglowSalvapantallas.qml"
++        onLoaded: {
++            item.windowController = rootWindow;
++            item.timeoutMs = 30000; // prueba, despues se cambiara a cinco minutos
++            item.recommendations = Qt.binding(function() { return paraTi.picks; });
++            item.fallbackImage = Qt.binding(function() { return lglowTema.fondo; });
++            item.allowed = Qt.binding(function() {
++                return root.visible && rootWindow.active && systemProperties.isAppForeground
++                    && uiController.homeShown
++                    && !uiController.isEditMode
++                    && !lglowPanel.open && !lglowMenu.open;
++            });
++        }
++        onStatusChanged: {
++            if (status === Loader.Error)
++                console.log("[lglow-salva] No se pudo cargar el protector; home conservado");
++        }
++    }
++
++    Connections {
++        target: lglowSalvaLoader.item
++        ignoreUnknownSignals: true
++        onCerrado: {
++            if (systemProperties.isAppForeground && rootWindow.active)
++                appListArea.forceActiveFocus();
++        }
++    }
++
++    Text {
++        anchors.horizontalCenter: parent.horizontalCenter
++        anchors.top: parent.top
++        anchors.topMargin: 16
++        z: 10001
++        visible: lglowSalvaLoader.status === Loader.Error
++        text: "No se pudo cargar el protector. LGlow sigue disponible."
++        color: "#FF6C80"
++        font.pixelSize: 24
++    }
+ }

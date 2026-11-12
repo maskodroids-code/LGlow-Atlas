@@ -1,0 +1,13 @@
+Adaptacion experimental exclusiva para LG 50UP7500PSF, webOS 6.5.3, firmware 03.53.45.
+Destino: com.webos.app.home, NO com.webos.app.fullhome.
+No usar en la primera TV 43UN7300PSC.
+Contiene parches y componentes de LGlow; no contiene originales propietarios de LG ni credenciales.
+12 parches regenerados desde las copias originales de la segunda TV.
+La reconstruccion local paso; la ejecucion en la TV aun no esta comprobada.
+preparar.sh verifica huellas y construye una copia en /var/lib/webosbrew/fullhomecustom.
+probar.sh monta solo esa copia sobre el QML del home y oculta checkpoints mediante montajes temporales.
+No modifica archivos originales de LG, no instala init.d, no modifica precargas y no reinicia compositor.
+volver.sh retira los montajes temporales y relanza el home original.
+Un reinicio de la TV tambien retira los montajes: no hay activacion automatica.
+La copia preparada permanece en /var/lib hasta que se elimine deliberadamente.
+Basado en IrvingGuerra/lglow, adaptado localmente; no es una publicacion oficial del autor.

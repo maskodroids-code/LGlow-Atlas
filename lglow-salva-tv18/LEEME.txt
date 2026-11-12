@@ -1,0 +1,13 @@
+Prueba experimental del protector de LGlow para la segunda TV, 50UP7500PSF 03.53.45.
+Solo se activa dentro del home visible, activo, maximizado y fuera de menus/edicion/recientes.
+Espera de prueba: 30 segundos. Objetivo final: 5 minutos tras validar navegacion e inactividad.
+Reutiliza imagenes de las recomendaciones cargadas por ParaTi; sin clave ni peticiones TMDB nuevas.
+Sin imagen disponible usa el fondo del home. Reloj/fecha y su posicion se actualizan durante el protector.
+preparar.sh copia el QML personalizado actual a una carpeta de prueba y valida MainView antes de parchear.
+probar.sh superpone temporalmente esa carpeta sobre el montaje de LGlow existente y relanza el home.
+volver.sh retira solo el montaje marcado de esta prueba y relanza el LGlow anterior.
+Reiniciar la TV restaura el LGlow anterior: no se instalan scripts de arranque nuevos.
+Los datos de prueba preparados en /var/lib permanecen guardados, pero no se activan solos.
+Sin cambios al compositor, particiones originales, configuracion, tiles, bloqueo de actualizaciones ni otras apps.
+No probado aun en ejecucion QML. No sustituye al protector del sistema ni promete controlar teclas reservadas por LG.
+No usar en la primera TV: el archivo base y app de destino son distintos.

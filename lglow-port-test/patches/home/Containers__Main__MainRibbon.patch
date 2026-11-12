@@ -1,0 +1,12 @@
+--- a/qml/Containers/Main/MainRibbon.qml
++++ b/qml/Containers/Main/MainRibbon.qml
+@@ -1151,7 +1151,8 @@
+         interval: rootWindow.cursorVisible ? 700 : 400
+ 
+         onTriggered: {
+-            if(uiController.isMainMode && !mainList.scrolling && !sub.previewDelayTimer.running && selectedEntry.activeFocus)
++            if(uiController.isMainMode && !mainList.scrolling && !sub.previewDelayTimer.running && selectedEntry.activeFocus
++                    && systemProperties.previewTileTypes.indexOf(selectedEntry.objData.tileType) !== -1)
+                 interfaces.preview.fetchPreviewData(selectedEntry);
+         }
+     }

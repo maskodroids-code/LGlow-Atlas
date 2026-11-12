@@ -1,0 +1,75 @@
+--- a/qml/UserInterfaceLayer/Containers/MainView.qml
++++ b/qml/UserInterfaceLayer/Containers/MainView.qml
+@@ -38,7 +38,19 @@
+     property bool appsOpen: false
+     property real appsScroll: appsOpen ? 1 : 0
+     Behavior on appsScroll { NumberAnimation { duration: 450; easing.type: Easing.OutCubic } }
+-    readonly property real appsShift: appsScroll * Math.max(0, appListHomeY - styleSheet.getRValue(72))
++    property bool widgetsOpen: false
++    onAppsOpenChanged: if (!appsOpen) widgetsOpen = false
++    readonly property real widgetShift: widgetsOpen ? Math.max(0, chileCards.y + chileCards.height + styleSheet.getRValue(140) - shelfListContainer.height) : 0
++    readonly property real appsShift: appsScroll * Math.max(0, appListHomeY - styleSheet.getRValue(72)) + widgetShift
++    function openWidgets() {
++        if (chileCards.status !== Loader.Ready) return;
++        widgetsOpen = true;
++        chileCards.item.forceActiveFocus();
++    }
++    function closeWidgets() {
++        widgetsOpen = false;
++        restGrid.forceActiveFocus();
++    }
+ 
+     function openApps(column) {
+         // El compositor solo le pasa Atrás al home si su ventana lo declara (el binario ya lo
+@@ -1048,6 +1060,8 @@
+                 z: 1
+                 visible: !uiController.isEditMode
+                 enabled: visible
++                allowExitDown: true
++                onExitDown: root.openWidgets()
+                 onCloseAll: root.closeApps(column)
+             }
+ 
+@@ -1058,10 +1072,32 @@
+                 z: 1
+                 visible: restGrid.visible
+                 opacity: root.appsScroll
+-                text: restGrid.lpModel.count + " apps  ·  ↑ o Atrás para regresar  ·  ✎ para reordenar"
++                text: restGrid.lpModel.count + " apps  ·  ↓ Clima e indicadores  ·  ↑ o Atrás para regresar"
+                 color: lglowTema.textoSuave
+                 font.family: fontManager.smart_Regular.family
+                 font.pixelSize: styleSheet.getRValue(26)
++            }
++
++            // [lglow-chile] Tarjetas aisladas: un error no invalida el inicio.
++            Loader {
++                id: chileCards
++                anchors.horizontalCenter: appGrid.horizontalCenter
++                y: restGrid.y + restGrid.height + styleSheet.getRValue(100)
++                width: appGrid.width
++                height: styleSheet.getRValue(360)
++                z: 3
++                visible: root.appsOpen && restGrid.visible
++                source: "Main/LglowChile.qml"
++                onLoaded: {
++                    item.config = Qt.binding(function() { return paraTi.config; });
++                    item.allowed = Qt.binding(function() { return chileCards.visible && systemProperties.isAppForeground && rootWindow.active; });
++                }
++                onStatusChanged: if(status === Loader.Error) console.log("[lglow-chile] No se pudieron cargar las tarjetas; inicio conservado");
++            }
++            Connections {
++                target: chileCards.item
++                ignoreUnknownSignals: true
++                onVolverApps: root.closeWidgets()
+             }
+ 
+             // Con el home arriba, un clic en lo que se asoma baja al resto. También absorbe el
+@@ -1092,7 +1128,7 @@
+                 y: -styleSheet.getRValue(32)
+                 // Sobresale de las apps lo mismo que su relleno de arriba: queda casi alineada con "Para ti"
+                 width: appGrid.width + 2 * styleSheet.getRValue(32)
+-                height: Math.max(restGrid.y + restGrid.height + styleSheet.getRValue(160), shelfListContainer.height)
++                height: Math.max(restGrid.y + restGrid.height + styleSheet.getRValue(80), shelfListContainer.height)
+                 radius: styleSheet.getRValue(48)
+                 color: lglowTema.repisa
+                 border.color: lglowTema.repisaBorde

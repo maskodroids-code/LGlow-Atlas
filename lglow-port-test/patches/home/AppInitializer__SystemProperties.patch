@@ -1,0 +1,12 @@
+--- a/qml/AppInitializer/SystemProperties.qml
++++ b/qml/AppInitializer/SystemProperties.qml
+@@ -118,6 +118,9 @@
+     property var supportedDomains: []
+ 
+     property int appStartIndex: 0
++    // [home-custom] Lista configurable de apps ocultas; conservar indice del firmware.
++    property var hiddenAppIds: ["com.webos.app.browser", "com.webos.app.discovery", "com.webos.app.photovideo", "com.webos.app.music", "com.webos.app.homeconnect", "com.palmdts.devmode", "com.olytt.freetv"]
++    property var previewTileTypes: ["recent", "connections"]
+     property bool isResetCase: false
+     property bool readSmartHome: false
+     property bool readRecents: false

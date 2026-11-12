@@ -1,0 +1,19 @@
+--- a/qml/UserInterfaceLayer/Containers/Main/Hero.qml
++++ b/qml/UserInterfaceLayer/Containers/Main/Hero.qml
+@@ -813,14 +813,8 @@
+     function initialize() {
+         root.isCheckAdvertisement = false;
+         root.currentState = "default";
+-        if (uiController.showHeroBanner) {
+-            interfaces.promotion.requestBigBannerInfoWithoutContextIndex(root.adSlotName, root.adSize, function(promotionData) {
+-                processBigBannerPromotionRequest(promotionData);
+-            });
+-            interfaces.promotion.requestRecommendedSponsoredAdData();
+-            root.isBigBannerRequested = true;
+-            interfaces.promotion.requestInlineBannerAdData();
+-        }
++        // [fullhome-custom] No solicitar banners ni anuncios inline del firmware 04.64.00.
++        processBigBannerPromotionRequest([]);
+     }
+ 
+     function processBigBannerPromotionRequest(promotions) {

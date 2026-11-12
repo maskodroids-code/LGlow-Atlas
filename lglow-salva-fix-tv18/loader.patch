@@ -1,0 +1,61 @@
+--- a/qml/UserInterfaceLayer/Containers/MainView.qml
++++ b/qml/UserInterfaceLayer/Containers/MainView.qml
+@@ -2939,21 +2939,47 @@
+         onCerrado: lglowBarra.forceActiveFocus()
+     }
+ 
+-    // [lglow-salva-tv18] Prueba local del home; no toca el compositor.
+-    LglowSalvapantallas {
+-        id: lglowSalva
++    // [lglow-salva-tv18] Carga aislada: un error del protector no invalida el home.
++    Loader {
++        id: lglowSalvaLoader
+         anchors.fill: parent
+-        windowController: rootWindow
+-        timeoutMs: 30000 // PRUEBA: 30 segundos. Definitivo: 300000.
+-        allowed: root.visible && rootWindow.active && systemProperties.isAppForeground
+-                 && rootWindow.windowState === "maximized" && uiController.homeShown
+-                 && !uiController.isEditMode && !uiController.isRecentMode
+-                 && !lglowPanel.open && !lglowMenu.open
+-        recommendations: paraTi.picks
+-        fallbackImage: lglowTema.fondo
++        z: 10000
++        source: "Main/LglowSalvapantallas.qml"
++        onLoaded: {
++            item.windowController = rootWindow;
++            item.timeoutMs = 30000; // prueba, despues se cambiara a cinco minutos
++            item.recommendations = Qt.binding(function() { return paraTi.picks; });
++            item.fallbackImage = Qt.binding(function() { return lglowTema.fondo; });
++            item.allowed = Qt.binding(function() {
++                return root.visible && rootWindow.active && systemProperties.isAppForeground
++                    && rootWindow.windowState === "maximized" && uiController.homeShown
++                    && !uiController.isEditMode && !uiController.isRecentMode
++                    && !lglowPanel.open && !lglowMenu.open;
++            });
++        }
++        onStatusChanged: {
++            if (status === Loader.Error)
++                console.log("[lglow-salva] No se pudo cargar el protector; home conservado");
++        }
++    }
++
++    Connections {
++        target: lglowSalvaLoader.item
++        ignoreUnknownSignals: true
+         onCerrado: {
+             if (systemProperties.isAppForeground && rootWindow.active)
+                 appListArea.forceActiveFocus();
+         }
+     }
++
++    Text {
++        anchors.horizontalCenter: parent.horizontalCenter
++        anchors.top: parent.top
++        anchors.topMargin: 16
++        z: 10001
++        visible: lglowSalvaLoader.status === Loader.Error
++        text: "No se pudo cargar el protector. LGlow sigue disponible."
++        color: "#FF6C80"
++        font.pixelSize: 24
++    }
+ }

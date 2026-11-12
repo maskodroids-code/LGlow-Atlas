@@ -1,0 +1,12 @@
+aac4ee5e8c42c0f4bd587001fb05c368  qml/AppInitializer/SystemProperties.qml
+077d5861dfea9c3f4b31ca0c348469c6  qml/Configurations/SystemServiceResponseProcessors.js
+6b021fac9c63a5ed2a74faf7336a43a2  qml/Interfaces/AppInterfaces/AppInterfaces.qml
+ea64fc83b9ae3305fa0e1bfbd4f9d6cd  qml/Model/ShelfList.js
+be1c39cd5f162dfae80cc7cefa7ccbca  qml/UserInterfaceLayer/Containers/Main/AppTile.qml
+6279a2cf412ff4739b2d4027da50cb92  qml/UserInterfaceLayer/Containers/Main/Hero.qml
+44acbb870c475229efb7560748a47cf3  qml/UserInterfaceLayer/Containers/Main/LaunchPoint.qml
+2b5437ddd866ee2efae525ffb8df2716  qml/UserInterfaceLayer/Containers/Main/TopGlobalAction.qml
+0f7fe350118058c8b3be9f5056533c08  qml/UserInterfaceLayer/Containers/Main/TopShelf.qml
+e8fe6c95f35bd2fbba15ff819b88a99e  qml/UserInterfaceLayer/Containers/MainView.qml
+f6e13194e1b4b71d4a6e2b5c4f04d9c8  qml/UserInterfaceLayer/GlobalStyle.qml
+3a278de5d3f5e9a746dae1cd4619ed5d  qml/UserInterfaceLayer/UIController.qml
