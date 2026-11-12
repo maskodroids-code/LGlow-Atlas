@@ -1,11 +1,11 @@
 <div align="center">
 
-<h1><a href="https://maskodroid.github.io/lglow-atlas/"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/img/marca/lglow-logo-oscuro.svg"><img src="docs/img/marca/lglow-logo.svg" alt="LGlow" width="300"></picture></a></h1>
+<h1><a href="https://maskodroids-code.github.io/LGlow-Atlas/"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/img/marca/lglow-logo-oscuro.svg"><img src="docs/img/marca/lglow-logo.svg" alt="LGlow" width="300"></picture></a></h1>
 
 **Your old LG TV needs a glow up.** A clean, fast, ad-free home screen for 2019 LG TVs on webOS 4.5,
 built on top of the stock one.
 
-[Website](https://maskodroid.github.io/lglow-atlas/) · [Español](README.md) · [Before and after](#before-and-after) · [vs Free My TV](#what-about-free-my-tv) · [Compatibility](#compatibility) · [Install](#install)
+[Website](https://maskodroids-code.github.io/LGlow-Atlas/) · [Español](README.md) · [Before and after](#before-and-after) · [vs Free My TV](#what-about-free-my-tv) · [Compatibility](#compatibility) · [Install](#install)
 
 </div>
 
@@ -119,7 +119,7 @@ How to help me:
 ### Already rooted with SSH
 
 ```bash
-git clone https://github.com/IrvingGuerra/lglow && cd lglow
+git clone https://github.com/maskodroids-code/LGlow-Atlas && cd LGlow-Atlas
 ./instalar.sh 192.168.1.50                 # your TV's IP
 ssh root@192.168.1.50 vi /var/lib/webosbrew/fullhomecustom/config.json   # TMDB key, city, coordinates
 python3 tools/make-tiles.py 192.168.1.50   # rectangular tiles from your TV's app icons

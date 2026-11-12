@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="LGlow Atlas para televisores LG con webOS. Clima por ciudad y salvapantallas de arte enmarcado.">
+  <title>LGlow Atlas · Inicio para LG webOS</title>
+  <link rel="stylesheet" href="atlas.css">
+</head>
+<body>
+  <header class="wrap top">
+    <a class="brand" href="./">LGlow <span>Atlas</span></a>
+    <nav aria-label="Navegación principal">
+      <a href="#capturas">Capturas</a>
+      <a href="#compatibilidad">Compatibilidad</a>
+      <a href="#instalacion">Instalación</a>
+      <a href="https://github.com/maskodroids-code/LGlow-Atlas">GitHub ↗</a>
+    </nav>
+  </header>
+  <main class="wrap">
+    <section class="hero" aria-labelledby="titulo">
+      <div>
+        <p class="platform">Para televisores LG con webOS</p>
+        <h1 id="titulo">LGlow <span>Atlas</span></h1>
+        <p class="intro">Elige la ciudad que quieres ver en el inicio de tu TV. Cuando la dejes en reposo, convierte la pantalla en una galería de arte enmarcado.</p>
+        <a class="button" href="#compatibilidad">Comprobar mi televisor</a>
+      </div>
+      <figure>
+        <img src="img/atlas-ubicacion.png" width="960" height="540" alt="Selector de ciudad y teclado en pantalla de LGlow Atlas">
+        <figcaption>Selección manual de ciudad desde el control remoto.</figcaption>
+      </figure>
+    </section>
+
+    <div class="features">
+      <section>
+        <h2>El clima de tu ciudad</h2>
+        <p>Escribe el nombre de una ciudad con el teclado del televisor. La barra muestra la temperatura, el viento, la humedad y el índice UV de la ubicación seleccionada.</p>
+      </section>
+      <section>
+        <h2>Arte a pantalla completa</h2>
+        <p>Usa tus propias imágenes enmarcadas, con fundido suave y sin texto ni superposiciones. Elige un intervalo de 30 segundos, 1 minuto, 3 minutos o 5 minutos.</p>
+      </section>
+    </div>
+
+    <section class="gallery" id="capturas" aria-labelledby="capturas-titulo">
+      <h2 id="capturas-titulo">Antes y después</h2>
+      <div class="shots">
+        <figure>
+          <img src="img/antes-home.jpg" alt="Pantalla de inicio original de LG con recomendaciones y fila de aplicaciones" loading="lazy">
+          <figcaption>Inicio original de LG. Captura de referencia de LGlow.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/atlas-ubicacion.png" alt="Inicio de Atlas con el selector de ciudad vacío y el teclado del televisor" loading="lazy">
+          <figcaption>LGlow Atlas con la búsqueda de ciudad abierta.</figcaption>
+        </figure>
+      </div>
+      <h2>Salvapantallas</h2>
+      <div class="shots">
+        <figure>
+          <img src="img/atlas-salvapantallas.png" alt="Obra abstracta enmarcada a pantalla completa, sin textos ni superposiciones" width="480" height="270" loading="lazy">
+          <figcaption>Captura del salvapantallas en funcionamiento.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/atlas-intervalo.png" alt="Menú de intervalos con cuatro opciones, de 30 segundos a 5 minutos" width="960" height="540" loading="lazy">
+          <figcaption>Selector del tiempo entre imágenes desde el control remoto.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="compat" id="compatibilidad">
+      <div>
+        <h2>Compatibilidad</h2>
+        <p>Comprueba el modelo, el firmware y la aplicación de inicio antes de aplicar un parche. Las adaptaciones locales requieren acceso root y SSH.</p>
+        <a class="button" href="https://github.com/maskodroids-code/LGlow-Atlas/blob/main/CAMBIOS-TV.md">Ver notas de instalación ↗</a>
+      </div>
+      <table>
+        <caption>Modelos y firmware de referencia</caption>
+        <thead><tr><th scope="col">Modelo LG</th><th scope="col">Firmware</th><th scope="col">Inicio</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">43UN7300PSC</th><td>04.64.00</td><td><code>com.webos.app.fullhome</code></td></tr>
+          <tr><th scope="row">50UP7500PSF</th><td>03.53.45</td><td><code>com.webos.app.home</code></td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="install" id="instalacion" aria-labelledby="instalacion-titulo">
+      <h2 id="instalacion-titulo">Instalación paso a paso</h2>
+      <ol>
+        <li>Identifica el modelo y el firmware en los ajustes del televisor.</li>
+        <li>Consulta las notas de compatibilidad y prepara el acceso SSH.</li>
+        <li>Aplica los parches que correspondan a tu firmware y verifica el inicio y el salvapantallas.</li>
+      </ol>
+      <a class="button" href="https://github.com/maskodroids-code/LGlow-Atlas#installation">Abrir guía de instalación ↗</a>
+    </section>
+  </main>
+  <footer class="wrap footer">
+    <span>LGlow Atlas · Maskodroid</span>
+    <span>Basado en <a href="https://github.com/IrvingGuerra/lglow">LGlow</a> · Clima de <a href="https://open-meteo.com/">Open-Meteo</a></span>
+  </footer>
+</body>
+</html>

@@ -1,6 +1,6 @@
 <div align="center">
 
-<h1><a href="https://maskodroid.github.io/lglow-atlas/"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/img/marca/lglow-logo-oscuro.svg"><img src="docs/img/marca/lglow-logo.svg" alt="LGlow" width="300"></picture></a></h1>
+<h1><a href="https://maskodroids-code.github.io/LGlow-Atlas/"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/img/marca/lglow-logo-oscuro.svg"><img src="docs/img/marca/lglow-logo.svg" alt="LGlow" width="300"></picture></a></h1>
 
 **¿Tu vieja LG necesita un glow up?** Un home limpio, rápido y sin publicidad para TVs LG de 2019 con
 webOS 4.5, hecho sobre el home original.
@@ -8,7 +8,7 @@ webOS 4.5, hecho sobre el home original.
 Tendencias de tus propias apps, el clima, tiles grandes y nada de banners de LG.
 Sin tocar las particiones del sistema: todo se monta encima y se quita con un comando.
 
-[Sitio web](https://maskodroid.github.io/lglow-atlas/) · [Antes y después](#antes-y-después) · [vs Free My TV](#y-free-my-tv) · [Compatibilidad](#compatibilidad) · [Guía paso a paso](#guía-paso-a-paso) · [Cómo funciona](docs/05-como-funciona.md) · [Problemas](docs/07-problemas-y-desinstalar.md) · [English](README.en.md) ([guides](docs/en/01-root.md))
+[Sitio web](https://maskodroids-code.github.io/LGlow-Atlas/) · [Antes y después](#antes-y-después) · [vs Free My TV](#y-free-my-tv) · [Compatibilidad](#compatibilidad) · [Guía paso a paso](#guía-paso-a-paso) · [Cómo funciona](docs/05-como-funciona.md) · [Problemas](docs/07-problemas-y-desinstalar.md) · [English](README.en.md) ([guides](docs/en/01-root.md))
 
 </div>
 
@@ -138,7 +138,7 @@ Cómo ayudarme:
 
 
 ```bash
-git clone https://github.com/IrvingGuerra/lglow && cd lglow
+git clone https://github.com/maskodroids-code/LGlow-Atlas && cd LGlow-Atlas
 ./instalar.sh 192.168.1.50                 # la IP de tu TV
 ssh root@192.168.1.50 vi /var/lib/webosbrew/fullhomecustom/config.json   # llave TMDB y ciudad
 python3 tools/make-tiles.py 192.168.1.50   # tiles rectangulares de tus apps

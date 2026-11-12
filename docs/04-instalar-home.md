@@ -8,7 +8,7 @@ Pillow (`pip install pillow`, solo para generar los tiles).
 ## Instalar
 
 ```bash
-git clone https://github.com/IrvingGuerra/lglow && cd lglow
+git clone https://github.com/maskodroids-code/LGlow-Atlas && cd LGlow-Atlas
 ./instalar.sh 192.168.1.50        # la IP de tu TV (o un alias de ~/.ssh/config)
 ```
 

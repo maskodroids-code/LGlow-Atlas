@@ -1,8 +1,18 @@
 # LGlow Atlas
 
-[Project website](https://maskodroid.github.io/lglow-atlas/) · [GitHub repository](https://github.com/Maskodroid/lglow-atlas)
+[Project website](https://maskodroids-code.github.io/LGlow-Atlas/) · [GitHub repository](https://github.com/maskodroids-code/LGlow-Atlas)
 
 LGlow Atlas is a fork of [LGlow](https://github.com/IrvingGuerra/lglow) for LG webOS TVs. It adds weather for a manually selected city and a full-screen framed art screensaver.
+
+## Screenshots
+
+| Original LG home | LGlow Atlas city selector |
+| --- | --- |
+| ![Original LG home](docs/img/antes-home.jpg) | ![City search in LGlow Atlas](docs/img/atlas-ubicacion.png) |
+
+| Framed art screensaver | Slideshow interval |
+| --- | --- |
+| ![Artwork displayed without overlays](docs/img/atlas-salvapantallas.png) | ![Slideshow interval menu](docs/img/atlas-intervalo.png) |
 
 ## Features
 
