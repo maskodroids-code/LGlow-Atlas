@@ -14,6 +14,7 @@
       <a href="#capturas">Capturas</a>
       <a href="#compatibilidad">Compatibilidad</a>
       <a href="#instalacion">Instalación</a>
+      <a href="#prompt-ia">Prompt para IA</a>
       <a href="https://github.com/maskodroids-code/LGlow-Atlas">GitHub ↗</a>
     </nav>
   </header>
@@ -91,10 +92,54 @@
       </ol>
       <a class="button" href="https://github.com/maskodroids-code/LGlow-Atlas#installation">Abrir guía de instalación ↗</a>
     </section>
+    <section class="install" id="prompt-ia" aria-labelledby="prompt-ia-titulo">
+      <h2 id="prompt-ia-titulo">Instalación con ayuda de IA</h2>
+      <p>Copia el prompt y completa los datos de tu televisor. Puedes utilizar Claude Code, Codex o Antigravity para instalar.</p>
+      <button class="button" id="copiar-prompt" type="button">Copiar prompt</button>
+      <span id="estado-copia" role="status"></span>
+      <textarea id="texto-prompt" aria-label="Prompt de instalación" readonly rows="16" style="display:block;width:100%;margin-top:1rem;padding:1rem;font:inherit">Quiero instalar LGlow Atlas en mi TV LG con webOS (https://github.com/maskodroids-code/LGlow-Atlas). Soy principiante. Gu&#237;ame un paso a la vez y espera mi confirmaci&#243;n o la salida de cada comando antes de continuar.
+
+Mi equipo
+- Modelo: [p. ej. 43LM5770PUA. B&#250;scalo en la etiqueta o en Configuraci&#243;n → General → Acerca de esta TV]
+- Versi&#243;n de webOS TV: [p. ej. 4.10.2]
+- Versi&#243;n de software: [p. ej. 05.40.97]
+- Mi computadora: [macOS / Windows / Linux]
+
+1. Lee el README, CAMBIOS-TV.md y las gu&#237;as de docs/. Usa esos archivos como fuente para guiarme.
+
+2. Comprueba el modelo, el firmware y la aplicaci&#243;n de inicio. El LGlow original se orienta a televisores LG de 2019 con webOS 4.5 y com.webos.app.fullhome, desde el firmware 05.40.09. Revisa tambi&#233;n las adaptaciones de Atlas descritas en CAMBIOS-TV.md. Comprueba si mi equipo ya tiene el acceso autorizado necesario y SSH.
+
+3. Sigue las gu&#237;as aplicables en orden: preparaci&#243;n, SSH, instalaci&#243;n y limpieza opcional. Antes de cada comando, explica qu&#233; hace, d&#243;nde ejecutarlo y qu&#233; salida esperar. Antes de modificar archivos, explica c&#243;mo respaldarlos y restaurarlos.
+
+4. Evita escribir en las particiones de solo lectura y actualizar el firmware. Evita abrir, reinstalar o actualizar la aplicaci&#243;n Developer Mode de LG. Si los archivos no coinciden con los esperados, detente y consulta &#171;Regenerar los parches para otro firmware&#187; en docs/05-como-funciona.md. Aplica &#250;nicamente los parches compatibles.
+
+5. Instala primero la base compatible y luego las adaptaciones de Atlas. Comprueba sus requisitos, las rutas y la IP de destino. Verifica que Home abra LGlow Atlas, que se pueda elegir una ciudad y que la fecha y la hora est&#233;n a la izquierda de los &#237;conos. Comprueba los valores de viento, humedad e &#237;ndice UV. Si uso TMDB, gu&#237;ame para guardar la clave en una configuraci&#243;n local fuera de GitHub.
+
+6. Revisa las im&#225;genes publicadas en https://github.com/maskodroids-code/LGlow-Atlas/tree/main/salvapantallas. Usa la carpeta &#171;Con marco&#187; si est&#225; disponible. Conserva las proporciones y el marco completo, con un fundido suave. Si la adaptaci&#243;n lo admite, habilita los intervalos de 30 segundos, 1 minuto, 3 minutos y 5 minutos. Durante el salvapantallas, muestra solo la imagen, sin reloj, fecha, clima, ubicaci&#243;n, t&#237;tulos, indicadores, logotipos ni controles. Comprueba que Home abra LGlow Atlas al salir del salvapantallas.
+
+7. Prueba la activaci&#243;n por inactividad, varias transiciones y la persistencia tras reiniciar. Si algo falla, consulta docs/07-problemas-y-desinstalar.md. Revisa primero los respaldos o scripts de reversi&#243;n de las adaptaciones. Expl&#237;came cu&#225;ndo ejecutar ./instalar.sh &lt;IP de la TV&gt; --quitar y reiniciar para retirar la instalaci&#243;n base.
+
+Empieza leyendo el repositorio y dame &#250;nicamente el primer paso.</textarea>
+    </section>
   </main>
   <footer class="wrap footer">
     <span>LGlow Atlas · Maskodroid</span>
     <span>Basado en <a href="https://github.com/IrvingGuerra/lglow">LGlow</a> · Clima de <a href="https://open-meteo.com/">Open-Meteo</a></span>
   </footer>
+  <script>
+    const promptField = document.getElementById('texto-prompt');
+    const copyStatus = document.getElementById('estado-copia');
+
+    document.getElementById('copiar-prompt').addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(promptField.value);
+        copyStatus.textContent = 'Prompt copiado.';
+      } catch {
+        promptField.focus();
+        promptField.select();
+        copyStatus.textContent = 'Texto seleccionado. Pulsa Ctrl+C o Cmd+C para copiarlo.';
+      }
+    });
+  </script>
 </body>
 </html>
