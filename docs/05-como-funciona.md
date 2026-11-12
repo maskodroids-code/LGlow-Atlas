@@ -1,0 +1,129 @@
+# 5. Cómo funciona (por dentro)
+
+[English](en/05-how-it-works.md)
+
+Para quien quiera entenderlo, adaptarlo a otro modelo o contribuir.
+
+## Dos homes en webOS 4.10
+
+| App | Qué es |
+| --- | --- |
+| `com.webos.app.fullhome` | El home de pantalla completa que sale con la tecla Home desde la actualización de diciembre de 2023 (firmware 05.40.09): banner, filas y apps cuadradas. `defaultApps.home` apunta a esta. |
+| `com.webos.app.home` | La barra clásica de webOS 4.5 con mosaicos inclinados. Sigue cargada en memoria aunque casi no se usa. |
+
+Los dos están hechos en **QML** (texto plano), en `/usr/palm/applications/<app>/qml`, dentro de una partición
+de solo lectura y firmada. En webOS 10 el home es Flutter; aquí no.
+
+## Montar encima, sin tocar el original
+
+Igual que en [webos10-homescreen-customization](https://github.com/mareklarek/webos10-homescreen-customization):
+
+```sh
+mount --bind /var/lib/webosbrew/fullhomecustom/qml /usr/palm/applications/com.webos.app.fullhome/qml
+```
+
+El montaje vive en memoria. Al reiniciar desaparece, y `init.d/10-homecustom` lo vuelve a hacer. Si algo
+sale mal, basta con no montarlo.
+
+## El truco de CRIU (clave en webOS 4)
+
+Montar el QML **no basta**: el home no se carga desde los archivos, se **restaura con CRIU** (checkpoint/restore)
+desde una imagen de fábrica que ya trae el QML original en memoria:
+
+- `/etc/palm/sam-conf-tv.json` → `CRIUSupportApps` incluye `com.webos.app.home` y `com.webos.app.fullhome`.
+- Las imágenes viven en `/tmp/checkpoint/<app>` y en `/mnt/lg/cmn_data/checkpoint/<app>`. Si borras la de
+  `/tmp`, el servicio `criu` la vuelve a copiar desde `cmn_data`. Marcarla como `invalid_img` tampoco sirve.
+
+Lo que sí funciona: **tapar las dos carpetas con una carpeta vacía** (otro `mount --bind`) y matar el proceso.
+SAM no encuentra imagen, lanza el home en limpio y lee el QML montado. Tampoco esto borra nada.
+
+## El orden y el momento del arranque
+
+- Con Quick Start+ apagado, cada encendido es un arranque completo que regresa del snapshot de fábrica
+  (`/sys/power/mode = resume`).
+- El `startup.sh` de Homebrew Channel lo dispara el sistema hacia el **segundo ~42**, y entonces corre
+  `run-parts /var/lib/webosbrew/init.d`.
+- `10-homecustom` va primero y tarda menos de un segundo: el home queda listo hacia el **segundo ~45**.
+- Si en ese momento el home ya estaba en pantalla, se relanza al instante con el diseño nuevo. El script lo
+  sabe por el último `NL_VSC … "visible":true` del fullhome en `/var/log/messages`.
+- `60-sinprecarga` corre después y todo en segundo plano: con la TV recién encendida, cada `luna-send` tarda
+  varios segundos.
+
+## Los cambios al home (tv/patches y tv/qml)
+
+| Archivo | Cambio |
+| --- | --- |
+| `Configurations/SystemServiceResponseProcessors.js` | Filtra `listLaunchPoints` con `HIDDEN_IDS` (apps ocultas), incluidos los cambios incrementales. |
+| `Interfaces/AppInterfaces/AppInterfaces.qml` | `isDefaultShelf: true`: el modo sin conexión de LG, sin filas de contenido del servidor. |
+| `Model/ShelfList.js` | Deja solo `HOME_SH_TOP` y `HOME_SH_APPS`. |
+| `Containers/Main/Hero.qml`, `TopShelf.qml`, `AppInitializer/SystemProperties.qml` | Sin banners publicitarios, sin "Comience una nueva experiencia / Ir a Apps". |
+| `Containers/MainView.qml` | Fondo según el tema; fila de apps abajo (`appListHomeY`); "Para ti"; scroll a todas las apps (`appsScroll`); botones y menú de LGlow (la fila de íconos de LG queda oculta); cadena de foco. |
+| `GlobalStyle.qml`, `LaunchPoint.qml`, `AppTile.qml`, `TopGlobalAction.qml` | Tiles 5:3 sin borde, íconos de arriba oscuros. |
+| **Nuevos:** `AppGrid.qml`, `ParaTi.qml`, `AllAppsPage.qml` | La fila de apps (modos `pinned` y `all`), el encabezado con tendencias y la parte de abajo con todas las apps. |
+| **Nuevos:** `LglowTema.qml`, `LglowBarra.qml`, `LglowMenu.qml`, `LglowPanel.qml` | El tema (claro, oscuro o automático, guardado con LocalStorage), los botones de arriba (tema y engranaje), el menú de tema y el panel rápido (imagen y sonido con `settingsservice/setSystemSettings`, apagado con `tv.time/setSleepTimeInfo`, entradas con `eim/getAllInputStatus`). |
+
+La fila original de LG (`MainRibbon`) sigue cargada, invisible, porque mucho código del home depende de ella.
+En el modo edición (lápiz) se muestra la de LG.
+
+### Detalles que costaron trabajo
+
+- **Foco al volver de una app.** `MainView` tiene `visible: isAppForeground`: al abrir una app, todo el home se
+  vuelve invisible y pierde el foco. `AppGrid.claimFocus()` lo recupera cuando vuelve a ser visible, y también
+  cuando el preloadmanager precarga el home en segundo plano.
+- **Atrás.** El compositor solo le pasa la tecla al home si su ventana tiene
+  `_WEBOS_ACCESS_POLICY_KEYS_BACK = "true"`. Además, LG cierra el home al **soltar** Atrás
+  (`UIController.Keys.onReleased → goBack`). Por eso la parte de todas las apps regresa al soltar: si cerrara al
+  presionar, el soltar le llegaría a LG y haría un segundo "atrás".
+- **Navegación en `GridView`.** Con `interactive: false`, en Qt 5.6 el `GridView` ignora las flechas; se
+  manejan a mano.
+- **Tecla Home del control** = `Qt.Key_Super_L` (evdev `KEY_LEFTMETA`, 125). El compositor hace
+  `applicationManager.launch(defaultApp, {"launchType": "homeKey"})`.
+
+## El panel del engranaje y la pantalla de carga (el compositor)
+
+El botón de engranaje del control no llega a ninguna app: lo atrapa el compositor (`surface-manager`) en
+`/usr/lib/qt5/qml/KeyFilters/appLaunch.js` y abre `com.webos.app.quicksettings`, que no es una app sino QML
+(`/usr/lib/qt5/qml/QuickSettings/QuickSettings.qml`) cargado dentro del propio compositor. LGlow monta encima su
+propio `QuickSettings.qml` (`tv/quicksettings/`, mismo contrato: `StarfishSystemUIWindow`, `onLaunch` con
+`preload` → `exit()`), igual que la pantalla de carga (`default_app_splash.png`).
+
+El compositor guarda ambos en memoria desde que enciende, así que `init.d/20-compositor` (`tv/compositor.sh`)
+lo reinicia una vez (`initctl restart surface-manager`) cuando en pantalla está el home, una entrada o la TV en
+vivo. La entrada que estaba en pantalla regresa sola. Desactivable con `homecustom/SIN_COMPOSITOR`.
+
+Netflix, Prime Video y YouTube traen la gris de LG como pantalla de carga propia. `tv/splash-apps.sh` copia
+encima la de `tools/make-splash.py` (solo si la original es la genérica, por md5) y guarda la original en
+`fullhomecustom/splash/orig/`. Las tres son apps *squashfs*: SAM monta su imagen (`data/images/<app>/data.img`)
+como overlay sobre su carpeta la primera vez que se abren después de encender. El script monta antes la imagen y
+el overlay igual que SAM (que al abrir la app los ve en `/proc/mounts` y no los repite) y copia a través del
+overlay. **No es un `mount --bind`:** un montaje dentro de la carpeta de la app impide que la tienda de LG la
+desmonte y la actualización falla con `Failed to umount` (se ve en `/var/log/messages`). Si una actualización
+trae otra vez la gris, el siguiente encendido la vuelve a cambiar.
+
+El botón Movies del control llega al compositor como `WebOS.Key_webOS_USP` (en el log, `NL_RCU_CONTROL_USE`
+con `key_code` 1083). LG lo trata como acceso directo de su servidor (`handleCPHotkeys` en `appLaunch.js`): según el
+país abre Rakuten o la búsqueda con "movie". Con `"botonMovies"` en `config.json`, el instalador aplica
+`tv/patches/keyfilters/appLaunch.patch` a una copia, le escribe el id de la app (el compositor no lee `config.json`)
+y `compositor.sh` la monta antes de reiniciar el compositor. Solo con el `appLaunch.js` del firmware probado (md5).
+
+## Herramientas para depurar
+
+- `tv/key.js` (en la TV, `/var/lib/webosbrew/tools/key.js`): simula el control escribiendo eventos en
+  `/dev/input/event1` (LGE RCU). Ejemplo: `node /var/lib/webosbrew/tools/key.js HOME DOWN ENTER`.
+  Home = 125, OK = 28, flechas 103/108/105/106. Atrás = 14, que llega como `Key_Backspace` (el Atrás físico
+  llega como `Key_webOS_Back`).
+- Captura de pantalla:
+  `luna-send -n 1 luna://com.webos.service.tv.capture/executeOneShot '{"path":"/tmp/cap.png","method":"DISPLAY","format":"PNG","width":1920,"height":1080}'`
+- Log del home: `/var/log/fullhome`. Eventos del compositor: `grep NL_ /var/log/messages`.
+
+## Regenerar los parches para otro firmware
+
+Si tu TV tiene otra versión del home, los md5 no van a coincidir. Para portarlo:
+
+1. Copia el QML original de tu TV: `ssh tv "tar cf - -C /usr/palm/applications/com.webos.app.fullhome qml" | tar xf - -C original/`
+2. Copia ese árbol a `mod/` y aplica a mano los cambios de `tv/patches/fullhome` (aplicarán casi todos con
+   `patch -p1 --fuzz=3`; los que no, se ajustan viendo el contexto).
+3. Copia los tres QML nuevos de `tv/qml/fullhome` a `mod/qml/UserInterfaceLayer/Containers/Main/`.
+4. `python3 tools/regenerar-parches.py original mod tv/patches/fullhome` genera los `.patch` y los md5.
+
+Haz lo mismo con `com.webos.app.home` → `tv/patches/home`. Manda un PR con tu modelo y firmware.
